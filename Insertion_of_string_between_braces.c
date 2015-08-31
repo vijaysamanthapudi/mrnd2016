@@ -1,108 +1,69 @@
 #include<stdio.h>
-#define size 1000
-void insert_substring(char*, char*, int);
-char* substring(char*, int, int);
+#define size 10000
+int check(char*);
+void pass(char *a,char *b,char *s);
 int main()
-{ int i;
-    char text[size], substring[size];
-     int position=0;
-
-    printf("Enter some text\n");
-    gets(text);
-
-    printf("Enter the string to insert\n");
-    gets(substring);
-
-    int len=strlen(text);
-    for( i=0;i<len;i++)
-    {
-        if(text[i]=='{' && text[i+1]=='}')
-        {
-            position=i+2;
-            break;
-        }
-        if(text[i]=='[' && text[i+1]==']')
-        {
-            position=i+2;
-            break;
-        }
-        if(text[i]=='(' && text[i+1]==')')
-        {
-            position=i+2;
-            break;
-        }
-
-
-
-
-    }
-    if(position==0)
-    {
-        printf("invalid braces");
-        exit(0);
-
-    }
-
-    insert_substring(text, substring, position);
-
-    printf("%s\n",text);
-
-    return 0;
-}
-
-void insert_substring(char *a, char *b, int position)
 {
-    char *f, *e;
-    int length;
+	char a[size], b[size], s[size];
+	int  poss;
+	printf("enter the string containing braces \n");
+	gets(a);
+	printf("enter the string you want to insert into the first string \n");
+	gets(b);
+	poss = check(a);
+	if (poss == 1){
 
-    length = strlen(a);
-
-    f = substring(a, 1, position - 1 );
-    e = substring(a, position, length-position+1);
-
-    stringcopy(a, "");
-    stringcat(a, f);
-    free(f);
-    stringcat(a, b);
-    stringcat(a, e);
-    free(e);
+		printf("invalid braces string\n");
+		exit(0);}
+	else
+		{pass(a,b,s);
+		printf("%s",s);}
 }
-
-char *substring(char *string, int position, int length)
+int  check(char *a)
 {
-    char *pointer;
-    int c;
+	int i, length, j;
+	for (length = 0; a[length]; length++);
+	if (length % 2 != 0)
+	{
+		return 1;
+	}
+	for (i = 0, j = length - 1;i<j; i++, j--)
+	{
+		switch (a[i])
+		{
+		case '(':
+			if (a[j] != ')')
+				return 1;
+			break;
+		case '[':
+			if (a[j] != ']')
+				return 1;
+			break;
+		case '{':
+			if (a[j] != '}')
+				return 1;
+			break;
+		case '<':
+			if (a[j] != '>')
+				return 1;
+			break;
+		default:
+			return 1;
+		}
+	}
 
-    pointer = malloc(length+1);
-
-    if( pointer == NULL )
-        exit(0);
-
-    for( c = 0 ; c < length ; c++ )
-        *(pointer+c) = *((string+position-1)+c);
-
-    *(pointer+c) = '\0';
-
-    return pointer;
 }
-
-void stringcopy(char d[], char s[]) {
-   int c = 0;
-
-   while (s[c] != '\0') {
-      d[c] = s[c];
-      c++;
-   }
-   d[c] = '\0';
-}
-
-void stringcat(char *dest, const char *src)
+void pass(char *a,char *b,char *s)
 {
-    char *rdest = dest;
+    int i,len,j;
+    for (len = 0; a[len]; len++);
+    for (i = 0; i < (len / 2); i++)
+		{s[i] = a[i];}
+	for (i, j = 0; b[j]; j++, i++)
+		{s[i] = b[j];}
+	for (j = (len / 2), i; a[j]; j++, i++)
+		{s[i] = a[j];}
+	s[i] = '\0';
 
-    while (*dest)
-      dest++;
-    while (*dest++ = *src++)
-      ;
-    return rdest;
+
 }
